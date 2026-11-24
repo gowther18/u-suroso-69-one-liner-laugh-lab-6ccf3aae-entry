@@ -14,7 +14,19 @@ import sys
 LINE = "It wasn't eating. It was a hug. I hug at 400 watts."
 
 
+def validate_line(line: str) -> None:
+    """Guard: the line must satisfy the competition gate (1-200 chars,
+    single line, not only whitespace, no trailing newline)."""
+    if not 1 <= len(line) <= 200:
+        raise ValueError("line must be 1-200 chars")
+    if "\n" in line or line != line.strip():
+        raise ValueError("line must be a single line with no trailing newline")
+    if not line.strip():
+        raise ValueError("line must not be only whitespace")
+
+
 def main() -> int:
+    validate_line(LINE)
     out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
     os.makedirs(out_dir, exist_ok=True)
     path = os.path.join(out_dir, "entry.txt")
